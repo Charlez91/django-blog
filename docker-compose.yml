@@ -4,9 +4,11 @@ services:
     app:
       build: .
       command: bash -c "python manage.py migrate && python manage.py runserver"
+      restart: unless-stopped
       volumes:
         - .:/app
       ports:
-        - 8000
-      env_file: /djamgo_project/.env
+        - 8000:8000
+      env_file: 
+        - /djamgo_project/.env
       

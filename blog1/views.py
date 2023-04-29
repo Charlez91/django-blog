@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from typing import Any
+
+from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -8,7 +10,9 @@ from django.views.generic import (
     DeleteView)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+
 from blog1.models import Post
+from blog1.utils import BlogUtils
 
 
 # Create your views here.
@@ -26,6 +30,11 @@ class Home(ListView):
     context_object_name = 'posts'
     paginate_by = 5
     template_name = 'blog1/home.html'
+
+    def get(self, request, *args: Any, **kwargs: Any) -> HttpResponse:
+        # load = BlogUtils()
+        # load.load_posts()
+        return super().get(request, *args, **kwargs)
 
 
 class UserPostListView(ListView):
