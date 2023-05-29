@@ -36,6 +36,9 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'taggit',
+    'ckeditor',
+    'ckeditor_uploader',
     'crispy_forms',
     'users.apps.UsersConfig',
     'blog1.apps.Blog1Config',
@@ -131,6 +134,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+CKEDITOR_UPLOAD_PATH = 'media/'
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 

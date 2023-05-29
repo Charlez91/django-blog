@@ -1,4 +1,17 @@
 {% extends 'blog1/base.html' %}
+{% block search %}
+<!-- SEARCH BAR -->
+<div class="col-md-6" >
+  <div class="header-search">
+    <form id="SearchForm" action="{% url 'search' %}">
+      <input class="search-input" id="q" name="q" placeholder="Search here"  required>
+      <button class="search-btn1" >Search</button>
+      <span id="SearchResult"></span>
+    </form>
+  </div>
+</div>
+<!-- END SEARCH BAR -->
+{% endblock search %}
 {% block content %}
 	{% for post in posts %}
 		<article class="media content-section">

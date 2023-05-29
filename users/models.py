@@ -12,7 +12,7 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return f"{self.user.username} profile"
 
-    def save(self):
+    def save(self) -> None:
         super().save()
 
         img = Image.open(self.image.path)

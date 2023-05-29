@@ -31,8 +31,8 @@ class UserUpdateForm(forms.ModelForm):
 
 class ProfileUpdateForm(forms.ModelForm):
 
-    #image = forms.ImageField()
-    #tests = forms.DateField()
+    # image = forms.ImageField()
+    # tests = forms.DateField()
     """docstring for UserRegistrationForm"""
     '''def __init__(self, arg):
         super(UserRegistrationForm, self).__init__()

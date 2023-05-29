@@ -1,6 +1,7 @@
-from typing import Any
+from typing import Any, Type
+from django.forms.models import BaseModelForm
 
-from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -10,12 +11,35 @@ from django.views.generic import (
     DeleteView)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.db.models import Q
 
 from blog1.models import Post
-from blog1.utils import BlogUtils
+# from blog1.utils import BlogUtils
+from .forms import PostForm
 
 
 # Create your views here.
+def search(request):
+    '''For Search of `Post` model for related posts'''
+    query: str = request.GET.get('q')
+
+    if not query or query.isspace():
+        messages.error(request, "please refine your search query...")
+        return redirect('blog-home')
+
+    search_results = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query)
+    )
+
+    context = {
+        'search_results': search_results,
+        'query': query,
+    }
+
+    return render(request, "blog1/search.html", context)
+
+
 # home as function based view
 def home(request):
     context = {'posts': Post.objects.all()}
@@ -57,7 +81,10 @@ class PostDetailView(DetailView):
 class PostCreateView(CreateView):
     '''View to create a post featuring a form with field of title and content'''
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'tags', 'content']
+
+    def get_form_class(self) -> Type[BaseModelForm]:
+        return PostForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -67,7 +94,10 @@ class PostCreateView(CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     '''Update a given post with form fields of  title and content'''
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'tags', 'content']
+
+    def get_form_class(self) -> Type[BaseModelForm]:
+        return PostForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
