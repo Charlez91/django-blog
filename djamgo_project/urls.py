@@ -25,6 +25,8 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog1.urls')),
+    path('', include('django_prometheus.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('register/', user_views.Register.as_view(), name='register'),
     path('login/', user_views.Login.as_view(), name='login'),
     path('logout/', user_views.Logout.as_view(), name='logout'),
